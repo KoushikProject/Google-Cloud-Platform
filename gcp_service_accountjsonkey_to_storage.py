@@ -4,7 +4,7 @@ from google.cloud import storage
 import os
 from datetime import datetime
 
-service_account_json = 'C:\\Users\\Anand.Pandian\\Desktop\\service_account_key.json'
+service_account_json = 'C:\\Users\\{UserName}\\Desktop\\service_account_key.json'
  
 now = datetime.now()
 timestamp = now.strftime("%Y%m%d%H%M")
