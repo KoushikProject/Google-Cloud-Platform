@@ -1,7 +1,7 @@
 from google.cloud import bigquery
 from google.oauth2 import service_account 
 
-service_account_json = 'C:\\Users\\Anand.Pandian\\Desktop\\service_account_key.json'
+service_account_json = 'C:\\Users\\{UserName}\\Desktop\\service_account_key.json'
  
 # give project_ID
 project_id = "hidden-mapper-414810"
