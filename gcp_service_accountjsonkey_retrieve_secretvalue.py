@@ -23,7 +23,7 @@ def access_secret_version(service_account_json,project_id, secret_id, version_id
     return payload
 
 
-service_account_json = 'C:\\Users\\Anand.Pandian\\Desktop\\service_account_key.json'
+service_account_json = 'C:\\Users\\{UserName}\\Desktop\\service_account_key.json'
 secret_id = "service_account_json_key"
 project_id = "hidden-mapper-414810"
  
