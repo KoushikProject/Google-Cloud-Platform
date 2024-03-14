@@ -1,0 +1,95 @@
+--view about the views in a dataset
+SELECT
+  *
+FROM
+  `hidden-mapper-414810`.audit.INFORMATION_SCHEMA.VIEWS;
+
+--view about table_snapshots metadata
+SELECT 
+*
+FROM
+audit.INFORMATION_SCHEMA.TABLE_SNAPSHOTS;
+
+--view about table's metadata
+SELECT
+  *
+FROM
+  audit.INFORMATION_SCHEMA.TABLES;
+
+--view for datasets info in a particular region
+SELECT
+*
+FROM 
+hidden-mapper-414810.region-us-east1.INFORMATION_SCHEMA.SCHEMATA;
+
+--view for linked dataset
+SELECT
+*
+FROM 
+hidden-mapper-414810.region-us-east1.INFORMATION_SCHEMA.SCHEMATA_LINKS;
+
+--view for dataset metadata
+SELECT
+*
+FROM 
+hidden-mapper-414810.region-us-east1.INFORMATION_SCHEMA.SCHEMATA_OPTIONS
+WHERE option_name = 'location';
+
+--view contains the near real-time metadata about consumption of your shared dataset tables. 
+SELECT
+*
+FROM 
+hidden-mapper-414810.region-us-east1.INFORMATION_SCHEMA.SHARED_DATASET_USAGE;
+
+--view to get the metadata of columns 
+SELECT
+*
+FROM
+hidden-mapper-414810.INFORMATION_SCHEMA.COLUMNS;
+--(OR)
+SELECT
+*
+FROM
+hidden-mapper-414810.audit.INFORMATION_SCHEMA.COLUMNS;
+--(OR)
+SELECT
+*
+FROM
+hidden-mapper-414810.region-us-east1.INFORMATION_SCHEMA.COLUMNS;
+
+--view to view the metadata of table options
+  SELECT
+    *
+  FROM
+    hidden-mapper-414810.region-us-east1.INFORMATION_SCHEMA.TABLE_OPTIONS;
+--(OR)
+  SELECT
+    *
+  FROM
+    hidden-mapper-414810.audit.INFORMATION_SCHEMA.TABLE_OPTIONS;
+
+--view about the table constraints
+SELECT *
+FROM
+hidden-mapper-414810.audit.INFORMATION_SCHEMA.TABLE_CONSTRAINTS;
+
+--view about the routines
+SELECT 
+*
+FROM
+hidden-mapper-414810.meta.INFORMATION_SCHEMA.ROUTINES;
+
+--view about the metadata of routines
+SELECT 
+*
+FROM
+hidden-mapper-414810.meta.INFORMATION_SCHEMA.ROUTINE_OPTIONS;
+
+--view about the object privileges, only regions can be used in from clause.
+SELECT
+*
+FROM
+hidden-mapper-414810.region-us-east1.INFORMATION_SCHEMA.OBJECT_PRIVILEGES 
+WHERE
+object_schema = 'insertjobdataset'
+AND object_name = 'etlauditlog';
