@@ -1,0 +1,32 @@
+import pandas as pd
+from google.cloud import bigquery
+
+#pip install pandas,gcsfs,fsspec,google-cloud-bigquery
+
+
+def hello_gcs():
+    """Triggered by a change to a Cloud Storage bucket.
+    Args:
+         event (dict): Event payload.
+         context (google.cloud.functions.Context): Metadata for the event.
+    """
+
+    #Python client to our BigQuery instance
+    
+    file_name = 'teacher.csv'
+    project_id = 'hidden-mapper-414810'
+    dataset_id = 'insertjobdataset'
+    table_name = 'teacher'
+
+    client = bigquery.Client(project=project_id)
+    #Configuration options for load jobs.
+    #write_disposition - Describes whether a job should overwrite or append the existing destination table if it already exists.
+    job_config = bigquery.LoadJobConfig(write_disposition = "WRITE_APPEND")
+
+    #Reading the csv file and putting it into a dataframe.
+    df_data = pd.read_csv('gs://gcp-dev-03' + '/' + file_name)
+    
+    
+    #Load contents of a pandas DataFrame to a table.
+    job = client.load_table_from_dataframe(df_data,"{}.{}.{}".format(project_id,dataset_id,table_name),job_config=job_config)
+hello_gcs()
