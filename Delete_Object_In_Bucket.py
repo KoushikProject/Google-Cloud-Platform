@@ -1,7 +1,9 @@
+#You need storage.objects.delete,storage.buckets.get.
+
 from google.cloud import bigquery
 from google.oauth2 import service_account 
 from google.cloud import storage
-# json oda path kudu
+
 service_account_json = 'C:\\Users\\Anand.Pandian\\Desktop\\hidden-mapper-414810-b8eb70c1117c.json'
  
 # give project_ID
