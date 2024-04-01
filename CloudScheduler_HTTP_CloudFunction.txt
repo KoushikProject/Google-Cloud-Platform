@@ -1,0 +1,73 @@
+Roles needed for service account: BigQuery Data Editor,BigQuery Job User,Cloud Run Invoker,Cloud Scheduler Job Runner,Eventarc Event Receiver,BigQuery Read Session User
+
+
+import functions_framework
+from google.cloud import bigquery
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from google.cloud import bigquery
+from google.oauth2 import service_account
+import os
+
+# CloudEvent function to be triggered by an Eventarc Cloud Audit Logging trigger
+# Note: this is NOT designed for second-party (Cloud Audit Logs -> Pub/Sub) triggers!
+def send_email(subject, body):
+    # Set up the SMTP server
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587
+    sender_email = "koushikranga200127@gmail.com"
+    receiver_email = "rangakoushik123@gmail.com"
+    password = os.environ.get('Gmail_Password')
+
+    # Create a multipart message and set headers
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Subject"] = subject
+
+    # Add greetings and additional content to the email body
+    email_content = """
+        <p>Dear User,</p>
+        <p>Please find below the latest Employee Data Report:</p>
+        <p>{}</p>
+        """.format(body)
+
+    # Add body to email
+    message.attach(MIMEText(email_content, "html"))
+
+    # Connect to SMTP server and send email
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, message.as_string())
+
+
+@functions_framework.cloud_event
+def hello_auditlog(cloudevent):
+ 
+    # Print out details from the `protoPayload`
+    # This field encapsulates a Cloud Audit Logging entry
+    # See https://cloud.google.com/logging/docs/audit#audit_log_entry_structure
+ 
+    payload = cloudevent.data.get("protoPayload")
+     
+    if payload:   
+
+      project_id = "hidden-mapper-414810"
+      dataset_id = "assessment_1"
+      table_id = "Employee"
+
+      # Construct a BigQuery client object
+      client = bigquery.Client(project=project_id)
+
+      # Query to extract data from table
+      query = f"SELECT Department, MAX(Salary) as Highest_Salary FROM `{project_id}.{dataset_id}.{table_id}` GROUP BY Department;"
+
+      # Saving the results of the query to a DataFrame
+      df_query_result = client.query(query).to_dataframe()
+
+      # Send email with DataFrame content
+      subject = "Employee Data Report"
+      body = df_query_result.to_html(index=False)
+      send_email(subject, body)
