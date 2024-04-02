@@ -57,7 +57,7 @@ def hello_auditlog():
     client = bigquery.Client(project=project_id, credentials=credentials)
 
     # Query to extract data from table
-    query = f"SELECT Department, MAX(Salary) as Highest_Salary FROM `{project_id}.{dataset_id}.{table_id}` GROUP BY Department;"
+    query = f"WITH MaxSalaryPerDepartment AS (SELECT Department, MAX(Salary) AS MaxSalary FROM `{project_id}.{dataset_id}.{table_id}` GROUP BY Department) SELECT e.Department, e.Name AS Highest_Salary_Staff, m.MaxSalary AS Highest_Salary FROM `{project_id}.{dataset_id}.{table_id}` e JOIN MaxSalaryPerDepartment m ON e.Department = m.Department AND e.Salary = m.MaxSalary;"
 
     # Saving the results of the query to a DataFrame
     df_query_result = client.query(query).to_dataframe()
@@ -130,7 +130,7 @@ def hello_auditlog():
     client = bigquery.Client(project=project_id, credentials=credentials)
 
     # Query to extract data from table
-    query = f"SELECT Department, MAX(Salary) as Highest_Salary FROM `{project_id}.{dataset_id}.{table_id}` GROUP BY Department;"
+    query = f"WITH MaxSalaryPerDepartment AS (SELECT Department, MAX(Salary) AS MaxSalary FROM `{project_id}.{dataset_id}.{table_id}` GROUP BY Department) SELECT e.Department, e.Name AS Highest_Salary_Staff, m.MaxSalary AS Highest_Salary FROM `{project_id}.{dataset_id}.{table_id}` e JOIN MaxSalaryPerDepartment m ON e.Department = m.Department AND e.Salary = m.MaxSalary;"
 
     # Saving the results of the query to a DataFrame
     df_query_result = client.query(query).to_dataframe()
