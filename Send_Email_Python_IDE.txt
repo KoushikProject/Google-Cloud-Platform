@@ -1,3 +1,7 @@
+
+USING GMAIL:
+--------------
+
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -59,3 +63,75 @@ def hello_auditlog():
 
 service_account_json = 'C:\\Users\\hp\\OneDrive\\Desktop\\hidden-mapper-414810-9b4fdc9be563.json'
 hello_auditlog()
+
+------------------------------------------------------------------------------------------------------------------------------------
+USING COMPANY EMAIL:
+---------------------
+
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from google.cloud import bigquery
+from google.oauth2 import service_account
+import os
+
+def send_email(subject, body):
+    # Set up the SMTP server
+    smtp_server = "smtp.office365.com"
+    smtp_port = 587
+    sender_email = "noreply@company.com"
+    receiver_email = "receiver_email id"
+    cc_email = "cc_email ids"
+    password = os.environ['Outlook_Password']
+
+    # Create a multipart message and set headers
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Cc"] = cc_email
+    message["Subject"] = subject
+
+    # Add greetings and additional content to the email body
+    email_content = """
+        <p>Dear User,</p>
+        <p>Please find below the latest Employee Data Report:</p>
+        <p>{}</p>
+        """.format(body)
+
+    # Add body to email
+    message.attach(MIMEText(email_content, "html"))
+
+    # Connect to SMTP server and send email
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(sender_email, password)
+        recipients = [receiver_email]
+        if cc_email:
+            recipients.append(cc_email)
+        server.sendmail(sender_email, recipients, message.as_string())
+
+def hello_auditlog():
+    project_id = "hidden-mapper-414810"
+    dataset_id = "assessment_1"
+    table_id = "Employee"
+
+    credentials = service_account.Credentials.from_service_account_file(service_account_json)
+
+    # Construct a BigQuery client object
+    client = bigquery.Client(project=project_id, credentials=credentials)
+
+    # Query to extract data from table
+    query = f"SELECT Department, MAX(Salary) as Highest_Salary FROM `{project_id}.{dataset_id}.{table_id}` GROUP BY Department;"
+
+    # Saving the results of the query to a DataFrame
+    df_query_result = client.query(query).to_dataframe()
+    print(df_query_result)
+
+    # Send email with DataFrame content
+    subject = "Employee Data Report - Koushik"
+    body = df_query_result.to_html(index=False)
+    send_email(subject, body)
+
+service_account_json = 'C:\\Users\\hp\\OneDrive\\Desktop\\hidden-mapper-414810-9b4fdc9be563.json'
+hello_auditlog()
+
