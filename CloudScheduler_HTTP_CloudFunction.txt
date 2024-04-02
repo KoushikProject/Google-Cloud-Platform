@@ -30,7 +30,7 @@ def send_email(subject, body):
     message["To"] = receiver_email
     message["Subject"] = subject
 
-    email_signature = "<p>Best regards,</p><p>Koushik R</p><p>Elait</p>"
+    email_signature = "<p >Best regards,<br>Koushik R<br>Elait</p>"
 
     # Add greetings and additional content to the email body
     email_content = """
@@ -107,7 +107,7 @@ def send_email(subject, body):
     message["Cc"] = cc_email
     message["Subject"] = subject
 
-    email_signature = "<p>Best regards,</p><p>Koushik R</p><p>Elait</p>"
+    email_signature = "<p >Best regards,<br>Koushik R<br>Elait</p>"
 
     # Add greetings and additional content to the email body
     email_content = """
