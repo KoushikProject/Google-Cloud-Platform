@@ -90,8 +90,9 @@ def send_email(subject, body):
     smtp_server = "smtp.office365.com"
     smtp_port = 587
     sender_email = "noreply@company.com"
-    receiver_email = "receiver_emailid"
-    cc_email = "cc_email ids"
+    receiver_email = "sudhagar.elumalai@company.com"
+    cc_emails = ["Koushik.Rangarajan@company.com","Anand.Pandian@company.com","Monesh.Pattabi@company.com"]
+    cc_email = ', '.join(cc_emails)
     password = os.environ.get('Gmail_Password')
 
     # Create a multipart message and set headers
@@ -115,9 +116,7 @@ def send_email(subject, body):
     with smtplib.SMTP(smtp_server, smtp_port) as server:
         server.starttls()
         server.login(sender_email, password)
-        recipients = [receiver_email]
-        if cc_email:
-            recipients.append(cc_email)
+        recipients = [receiver_email] + cc_emails
         server.sendmail(sender_email, recipients, message.as_string())
 
 
@@ -146,7 +145,7 @@ def hello_http(request):
     df_query_result = client.query(query).to_dataframe()
 
     # Send email with DataFrame content
-    subject = "Employee Data Report"
+    subject = "Employee Data Report - Koushik"
     body = df_query_result.to_html(index=False)
     send_email(subject, body)
     return 'OK'
