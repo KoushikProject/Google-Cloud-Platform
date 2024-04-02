@@ -26,12 +26,15 @@ def send_email(subject, body):
     message["Cc"] = cc_email
     message["Subject"] = subject
 
+    email_signature = "<p>Best regards,</p><p>Koushik R</p><p>Elait</p>"
+
     # Add greetings and additional content to the email body
     email_content = """
         <p>Dear User,</p>
         <p>Please find below the latest Employee Data Report:</p>
         <p>{}</p>
-        """.format(body)
+        {}
+        """.format(body,email_signature)
 
     # Add body to email
     message.attach(MIMEText(email_content, "html"))
@@ -96,12 +99,15 @@ def send_email(subject, body):
     message["Cc"] = cc_emails
     message["Subject"] = subject
 
+    email_signature = "<p>Best regards,</p><p>Koushik R</p><p>Elait</p>"
+
     # Add greetings and additional content to the email body
     email_content = """
         <p>Dear User,</p>
         <p>Please find below the latest Employee Data Report:</p>
         <p>{}</p>
-        """.format(body)
+        {}
+        """.format(body,email_signature)
 
     # Add body to email
     message.attach(MIMEText(email_content, "html"))
