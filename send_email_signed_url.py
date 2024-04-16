@@ -32,7 +32,7 @@ def send_email(subject, attachment_signed_url):
     receiver_email = "Koushik.Rangarajan@elait.com"
     cc_emails = ["Anand.Pandian@elait.com","Monesh.Pattabi@elait.com","gokul.gururaaj@elait.com"]
     cc_email = ', '.join(cc_emails)
-    password = 'xjlzhkgvfccbvysm'
+    password = 'your password'
 
     # Create a multipart message and set headers
     message = MIMEMultipart()
